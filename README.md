@@ -17,34 +17,41 @@ Antes de executar a API, certifique-se de ter as seguintes dependências instala
 </br>
 .NET 7 SDK
 </br>
+</br>
 Instalação e Execução
 </br>
 Siga as etapas abaixo para configurar e executar a API em sua máquina local:
+</br>
 </br>
 Clone este repositório para sua máquina:
 </br>
 git clone https://github.com/Igorsaulo/.NET-API.git
 </br>
+</br>
 Navegue até o diretório do projeto:
 </br>
 cd .NET-API
 </br>
-
+</br>
 Restaure as dependências do projeto:
 </br>
 dotnet restore
+</br>
 </br>
 Execute a migração do banco de dado:
 </br>
 dotnet ef migrations add NomeDaMigracao
 </br>
+</br>
 Execute as migrações pendentes:
 </br>
 dotnet ef database update
 </br>
+</br>
 Execute a aplicação:
 </br>
 dotnet run
+</br>
 </br>
 <h3>Rotas da API</h3>
 </br>
