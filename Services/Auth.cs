@@ -24,23 +24,5 @@ namespace Ecomerce.Services
 
         return null;
     }
-    public bool IsAuthenticated(string token)
-    {
-        var user = TokenService.DecodeToken(token);
-        if (user == null)
-        {
-            return false;
-        }
-        return true;
-    }
-    public string DecodedToken(string token)
-    {
-        var user = TokenService.DecodeToken(token);
-        if (user == null)
-        {
-            return null;
-        }
-        return user;
-    }
 }
 }

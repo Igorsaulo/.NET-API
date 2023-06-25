@@ -34,32 +34,5 @@ namespace Ecomerce.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-
-        public static string DecodeToken(string token)
-          {
-            Env.Load();
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET"));
-            try
-            {
-                var validationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ClockSkew = TimeSpan.Zero
-                };
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
-
-                var json = JsonSerializer.Serialize(principal.Claims);
-
-                return json;
-            }
-            catch
-            {
-                return null;
-            }
-        }
     }
 }

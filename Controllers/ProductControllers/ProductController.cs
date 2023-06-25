@@ -61,6 +61,24 @@ namespace Ecomerce.Controllers
               return NotFound();
           }
           return BadRequest();
-      } 
+      }
+
+
+    [Authorize]
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        var product = _productRepository.DeleteProduct(id);
+        if (product != null)
+        {
+            return Ok("Product deleted");
+        }
+        else if(product == null)
+        {
+            return NotFound();
+        }
+        return BadRequest();
+    }
+
   }
 }
