@@ -21,3 +21,4 @@
 /back-end/.env
 /back-end/app.db
 /front-end/node_modules/
+.env
