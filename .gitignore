@@ -4,7 +4,7 @@
 *.pdb
 *.user
 *.generated.cs
-/bin/
+/back-end/bin/
 /obj/
 /wwwroot/
 *.nupkg
@@ -18,5 +18,6 @@
 *.vssscc
 *.userprefs
 *.docstates
-.env
-app.db
+/back-end/.env
+/back-end/app.db
+/front-end/node_modules/
