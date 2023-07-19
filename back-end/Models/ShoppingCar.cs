@@ -8,7 +8,7 @@ namespace Ecomerce.Models
     public ICollection<Product>? Products { get; set; }
 
     // Foreign Keys
-    public Guid? CustomerId { get; set; }
-    public UserCustomer? Customer { get; set; }
+    public Guid UserId { get; set; }
+    public User User { get; set; }
   }
 }

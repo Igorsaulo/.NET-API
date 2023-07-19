@@ -93,7 +93,7 @@ namespace Ecomerce.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Quantify")
@@ -196,6 +196,11 @@ namespace Ecomerce.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CharacteristicsSerialized")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Characteristics");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -272,7 +277,8 @@ namespace Ecomerce.Migrations
                     b.HasOne("Ecomerce.Models.UserCustomer", "Customer")
                         .WithOne("ShoppingCar")
                         .HasForeignKey("Ecomerce.Models.ShoppingCar", "CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
                 });
@@ -336,7 +342,8 @@ namespace Ecomerce.Migrations
                 {
                     b.Navigation("Shopping");
 
-                    b.Navigation("ShoppingCar");
+                    b.Navigation("ShoppingCar")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ecomerce.Models.UserSeller", b =>

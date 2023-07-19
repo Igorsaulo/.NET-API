@@ -10,19 +10,16 @@ public class Product
   public string Category { get; set; }
   public decimal Price { get; set; }
   public int Quantity { get; set; }
-
-  private string _characteristicsJson;
-
   [NotMapped]
-  public Dictionary<string, string> Characteristics
+  public Dictionary<string, string> Characteristics {get; set;}
+  [Column("Characteristics")]
+  public string CharacteristicsSerialized
   {
-    get => JsonSerializer.Deserialize<Dictionary<string, string>>(_characteristicsJson);
-    set => _characteristicsJson = JsonSerializer.Serialize(value);
+    get => JsonSerializer.Serialize(Characteristics);
+    set => Characteristics = JsonSerializer.Deserialize<Dictionary<string, string>>(value);
   }
 
   // Foreign Keys
-  public Guid? SellerId { get; set; }
-  public UserSeller? Seller { get; set; }
   public Guid? ShoppingCarId { get; set; }
   public ShoppingCar? ShoppingCar { get; set; }
 }

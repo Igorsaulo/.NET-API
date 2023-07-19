@@ -24,7 +24,7 @@ namespace Ecomerce.Controllers
       var users = _userRepository.GetAll();
       return Ok(users);
     }
-    
+
     [Authorize]
     [HttpGet("{id}")]
     public IActionResult GetById(Guid id)
@@ -49,18 +49,18 @@ namespace Ecomerce.Controllers
     [HttpPut("{id}")]
     public IActionResult Put(Guid id, User user)
     {
-        var userFind = _userRepository.GetUserById(id);
-        if (userFind == null)
-        {
-            return NotFound();
-        }
-        
-        if (_userRepository.UpdateUser(id, user))
-        {
-            return Ok("User updated");
-        }
+      var userFind = _userRepository.GetUserById(id);
+      if (userFind == null)
+      {
+        return NotFound();
+      }
 
-        return NoContent();
+      if (_userRepository.UpdateUser(id, user))
+      {
+        return Ok("User updated");
+      }
+
+      return NoContent();
     }
 
     [Authorize]
@@ -72,10 +72,10 @@ namespace Ecomerce.Controllers
       {
         return NotFound();
       }
-     if( _userRepository.DeleteUser(id))
-     {
+      if (_userRepository.DeleteUser(id))
+      {
         return Ok("User deleted");
-     }
+      }
 
       return NoContent();
     }
@@ -90,6 +90,28 @@ namespace Ecomerce.Controllers
         return Unauthorized();
       }
       return Ok(token);
+    }
+
+    [Authorize]
+    [HttpPost("addProductInShoppingCar/{id}")]
+    public IActionResult addProducInShoppingCar(Guid id, Product product)
+    {
+      if (_userRepository.addProducInShoppingCar(id, product))
+      {
+        return Ok("Product added");
+      }
+      return NoContent();
+    }
+
+    [Authorize]
+    [HttpPost("removeProductInShoppingCar/{id}")]
+    public IActionResult removeProductInShoppingCar(Guid id, Product product)
+    {
+      if (_userRepository.removeProductInShoppingCar(id, product))
+      {
+        return Ok("Product removed");
+      }
+      return NoContent();
     }
   }
 }

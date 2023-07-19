@@ -22,20 +22,8 @@ namespace Ecomerce.Repositories
     public bool SaveUser(User user)
     {
       user.Password = PassWordManager.HashPassword(user.Password);
-      if (user.Category == "Customer")
-      {
-        UserCustomer customer = new UserCustomer();
-        customer.UserId = user.Id;
-        user.Customer = customer;
-        _context.UserCustomers.Add(customer);
-      }
-      else
-      {
-        UserSeller seller = new UserSeller();
-        seller.UserId = user.Id;
-        user.Seller = seller;
-        _context.UserSellers.Add(seller);
-      }
+      user.ShoppingCar = new ShoppingCar();
+      user.ShoppingCar.UserId = user.Id;
 
       var options = new JsonSerializerOptions
       {
@@ -52,6 +40,7 @@ namespace Ecomerce.Repositories
     public User GetUserById(Guid id)
     {
       var user = _context.Users.Find(id);
+
       return user;
     }
     public bool UpdateUser(Guid id, User user)
@@ -65,11 +54,6 @@ namespace Ecomerce.Repositories
       if (existingUser != null)
       {
         _context.Entry(existingUser).State = EntityState.Detached;
-      }
-      if (user.Customer != null)
-      {
-        UserCustomer customer = new UserCustomer();
-
       }
 
       _context.Users.Update(user);
@@ -89,19 +73,95 @@ namespace Ecomerce.Repositories
     public List<User> GetAll()
     {
       var users = _context.Users
-          .Include(u => u.Customer)
-          .Include(u => u.Seller)
+          .Include(c => c.ShoppingCar)
+          .ThenInclude(sc => sc.Products)
           .ToList();
 
       return users;
 
     }
-
-    public string AuthtenTicateUser(string email, string password, string category)
+    public bool addProducInShoppingCar(Guid id, Product product)
     {
-      return _authService.Authenticate(email, password, category);
+      try
+      {
+        var customer = _context.Users
+            .Include(u => u.ShoppingCar)
+            .ThenInclude(sc => sc.Products)
+            .FirstOrDefault(u => u.Id == id);
+
+        if (customer == null)
+        {
+          return false;
+        }
+
+        if (customer.ShoppingCar == null)
+        {
+          customer.ShoppingCar = new ShoppingCar
+          {
+            UserId = customer.Id
+          };
+          _context.SaveChanges();
+        }
+        customer.ShoppingCar.Products.Add(product);
+
+        _context.SaveChanges();
+        return true;
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e);
+        return false;
+      }
     }
 
 
+    public bool removeProductInShoppingCar(Guid id, Product product)
+    {
+      try
+      {
+        var user = _context.Users
+            .Include(c => c.ShoppingCar)
+            .ThenInclude(sc => sc.Products)
+            .FirstOrDefault(u => u.Id == id);
+
+        if (user == null || user.ShoppingCar == null)
+        {
+          return false;
+        }
+        var shoppingCar = user.ShoppingCar;
+        var productToRemove = shoppingCar.Products.FirstOrDefault(p => p.Id == product.Id);
+
+        if (productToRemove != null)
+        {
+          shoppingCar.Products.Remove(productToRemove);
+          _context.SaveChanges();
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e);
+        return false;
+      }
+    }
+
+
+
+    public string AuthtenTicateUser(string email, string password, string category)
+    {
+      try
+      {
+        return _authService.Authenticate(email, password, category);
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e);
+        return "Dados inválidos";
+      }
+    }
   }
 }

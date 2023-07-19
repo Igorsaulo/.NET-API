@@ -1,7 +1,7 @@
 namespace Ecomerce.Models
 {
-    public class User
-{
+  public class User
+  {
     public Guid Id { get; set; }
     public string Username { get; set; }
 
@@ -9,8 +9,8 @@ namespace Ecomerce.Models
 
     public string Password { get; set; }
     public string Category { get; set; }
-    public UserCustomer? Customer { get; set; }
-    public UserSeller? Seller { get; set; }
-}
+    public ShoppingCar ShoppingCar { get; set; }
+    public ICollection<Shopping>? Shopping { get; set; }
+  }
 
 }

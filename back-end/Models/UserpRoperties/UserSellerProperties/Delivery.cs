@@ -10,8 +10,8 @@ namespace Ecomerce.Models
     public string DeliveryStatus { get; set; }
 
     // Foreign Keys
-    public Guid SaleId { get; set; }
-    public SaleProduct Sale { get; set; }
+    public Guid ShoppingId { get; set; }
+    public Shopping Sale { get; set; }
   }
 
 }
