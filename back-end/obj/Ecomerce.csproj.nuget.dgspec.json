@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/ArquivosHD/c#/Ecomerce/Ecomerce.csproj": {}
+    "/home/ArquivosHD/Ecomerce/Ecomerce/back-end/Ecomerce.csproj": {}
   },
   "projects": {
-    "/home/ArquivosHD/c#/Ecomerce/Ecomerce.csproj": {
+    "/home/ArquivosHD/Ecomerce/Ecomerce/back-end/Ecomerce.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/ArquivosHD/c#/Ecomerce/Ecomerce.csproj",
+        "projectUniqueName": "/home/ArquivosHD/Ecomerce/Ecomerce/back-end/Ecomerce.csproj",
         "projectName": "Ecomerce",
-        "projectPath": "/home/ArquivosHD/c#/Ecomerce/Ecomerce.csproj",
+        "projectPath": "/home/ArquivosHD/Ecomerce/Ecomerce/back-end/Ecomerce.csproj",
         "packagesPath": "/home/igor-sauru/.nuget/packages/",
-        "outputPath": "/home/ArquivosHD/c#/Ecomerce/obj/",
+        "outputPath": "/home/ArquivosHD/Ecomerce/Ecomerce/back-end/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/igor-sauru/.nuget/NuGet/NuGet.Config"
@@ -67,6 +67,14 @@
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[7.0.8, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

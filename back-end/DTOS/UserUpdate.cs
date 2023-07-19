@@ -1,4 +1,4 @@
-namespace Ecomerce.Repositories
+namespace Ecomerce.DTOS
 {
   public class UserUpdateDTO{
     public string Username { get; set; }

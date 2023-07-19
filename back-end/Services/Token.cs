@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using DotNetEnv;
-using System.Text.Json;
 using Ecomerce.Models;
 
 
@@ -11,7 +10,7 @@ namespace Ecomerce.Services
 {
     public class TokenService
     {
-        public static string GenerateToken(UserModel user)
+        public static string GenerateToken(User user)
         {
             Env.Load();
             var tokenHandler = new JwtSecurityTokenHandler();

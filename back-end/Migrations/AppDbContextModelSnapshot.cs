@@ -17,7 +17,7 @@ namespace Ecomerce.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.8");
 
-            modelBuilder.Entity("DeliveryProperties", b =>
+            modelBuilder.Entity("Ecomerce.Models.Delivery", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,9 +30,6 @@ namespace Ecomerce.Migrations
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("DeliveryId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("DeliveryStatus")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -44,49 +41,50 @@ namespace Ecomerce.Migrations
                     b.Property<DateTime>("PreviewDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("SaleProductId")
+                    b.Property<Guid>("SaleId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SaleProductId");
+                    b.HasIndex("SaleId")
+                        .IsUnique();
 
-                    b.ToTable("DeliveryProperties");
+                    b.ToTable("Deliveries");
                 });
 
-            modelBuilder.Entity("Ecomerce.Models.ProductModel", b =>
+            modelBuilder.Entity("Ecomerce.Models.SaleProduct", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("Quantify")
+                    b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("SaleProductId")
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("SellerId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ShoppingCarId")
+                    b.Property<DateTime>("ShoppingDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalPrice")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SaleProductId");
+                    b.HasIndex("CustomerId");
 
-                    b.HasIndex("ShoppingCarId");
+                    b.HasIndex("ProductId");
 
-                    b.ToTable("Products");
+                    b.HasIndex("SellerId");
+
+                    b.ToTable("Sales");
                 });
 
             modelBuilder.Entity("Ecomerce.Models.ShoppingCar", b =>
@@ -95,31 +93,24 @@ namespace Ecomerce.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Quantify")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("ShoppingCarId")
+                    b.Property<int>("Quantify")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("Total")
                         .HasColumnType("REAL");
 
-                    b.Property<string>("UserCustomerId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserCustomerId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("CustomerId")
+                        .IsUnique();
 
                     b.ToTable("ShoppingCar");
                 });
 
-            modelBuilder.Entity("Ecomerce.Models.UserModel", b =>
+            modelBuilder.Entity("Ecomerce.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -132,9 +123,6 @@ namespace Ecomerce.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -152,136 +140,184 @@ namespace Ecomerce.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SaleProduct", b =>
+            modelBuilder.Entity("Ecomerce.Models.UserCustomer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserSellerId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid?>("UserSellerId1")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserSellerId1");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
-                    b.ToTable("SaleProduct");
+                    b.ToTable("UserCustomers");
                 });
 
-            modelBuilder.Entity("UserCustomer", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserCustomerId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid?>("UserModelId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("shoppingCarId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserModelId");
-
-                    b.ToTable("UserCustomer");
-                });
-
-            modelBuilder.Entity("UserSeller", b =>
+            modelBuilder.Entity("Ecomerce.Models.UserSeller", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Rating")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<float>("Revenue")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("TotalProducts")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TotalSales")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("UserModelId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("UserSellerId")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserModelId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
-                    b.ToTable("UserSeller");
+                    b.ToTable("UserSellers");
                 });
 
-            modelBuilder.Entity("DeliveryProperties", b =>
+            modelBuilder.Entity("Product", b =>
                 {
-                    b.HasOne("SaleProduct", null)
-                        .WithMany("Deliveries")
-                        .HasForeignKey("SaleProductId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImgUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("SellerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("ShoppingCarId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SellerId");
+
+                    b.HasIndex("ShoppingCarId");
+
+                    b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Ecomerce.Models.ProductModel", b =>
+            modelBuilder.Entity("Ecomerce.Models.Delivery", b =>
                 {
-                    b.HasOne("SaleProduct", null)
-                        .WithMany("Products")
-                        .HasForeignKey("SaleProductId");
+                    b.HasOne("Ecomerce.Models.SaleProduct", "Sale")
+                        .WithOne("Delivery")
+                        .HasForeignKey("Ecomerce.Models.Delivery", "SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Ecomerce.Models.ShoppingCar", null)
-                        .WithMany("Products")
-                        .HasForeignKey("ShoppingCarId");
+                    b.Navigation("Sale");
+                });
+
+            modelBuilder.Entity("Ecomerce.Models.SaleProduct", b =>
+                {
+                    b.HasOne("Ecomerce.Models.UserCustomer", "Customer")
+                        .WithMany("Shopping")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ecomerce.Models.UserSeller", "Seller")
+                        .WithMany("Sales")
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("Ecomerce.Models.ShoppingCar", b =>
                 {
-                    b.HasOne("UserCustomer", null)
-                        .WithMany("ShoppingCar")
-                        .HasForeignKey("UserCustomerId");
+                    b.HasOne("Ecomerce.Models.UserCustomer", "Customer")
+                        .WithOne("ShoppingCar")
+                        .HasForeignKey("Ecomerce.Models.ShoppingCar", "CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Ecomerce.Models.UserModel", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Ecomerce.Models.UserCustomer", b =>
+                {
+                    b.HasOne("Ecomerce.Models.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("Ecomerce.Models.UserCustomer", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SaleProduct", b =>
+            modelBuilder.Entity("Ecomerce.Models.UserSeller", b =>
                 {
-                    b.HasOne("UserSeller", null)
-                        .WithMany("Sales")
-                        .HasForeignKey("UserSellerId1");
+                    b.HasOne("Ecomerce.Models.User", "User")
+                        .WithOne("Seller")
+                        .HasForeignKey("Ecomerce.Models.UserSeller", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("UserCustomer", b =>
+            modelBuilder.Entity("Product", b =>
                 {
-                    b.HasOne("Ecomerce.Models.UserModel", null)
-                        .WithMany("Customer")
-                        .HasForeignKey("UserModelId");
+                    b.HasOne("Ecomerce.Models.UserSeller", "Seller")
+                        .WithMany("Products")
+                        .HasForeignKey("SellerId");
+
+                    b.HasOne("Ecomerce.Models.ShoppingCar", "ShoppingCar")
+                        .WithMany("Products")
+                        .HasForeignKey("ShoppingCarId");
+
+                    b.Navigation("Seller");
+
+                    b.Navigation("ShoppingCar");
                 });
 
-            modelBuilder.Entity("UserSeller", b =>
+            modelBuilder.Entity("Ecomerce.Models.SaleProduct", b =>
                 {
-                    b.HasOne("Ecomerce.Models.UserModel", null)
-                        .WithMany("Seller")
-                        .HasForeignKey("UserModelId");
+                    b.Navigation("Delivery")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ecomerce.Models.ShoppingCar", b =>
@@ -289,27 +325,24 @@ namespace Ecomerce.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Ecomerce.Models.UserModel", b =>
+            modelBuilder.Entity("Ecomerce.Models.User", b =>
                 {
                     b.Navigation("Customer");
 
                     b.Navigation("Seller");
                 });
 
-            modelBuilder.Entity("SaleProduct", b =>
+            modelBuilder.Entity("Ecomerce.Models.UserCustomer", b =>
                 {
-                    b.Navigation("Deliveries");
+                    b.Navigation("Shopping");
 
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("UserCustomer", b =>
-                {
                     b.Navigation("ShoppingCar");
                 });
 
-            modelBuilder.Entity("UserSeller", b =>
+            modelBuilder.Entity("Ecomerce.Models.UserSeller", b =>
                 {
+                    b.Navigation("Products");
+
                     b.Navigation("Sales");
                 });
 #pragma warning restore 612, 618

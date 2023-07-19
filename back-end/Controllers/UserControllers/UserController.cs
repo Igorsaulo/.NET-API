@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Ecomerce.Repositories;
 using Ecomerce.Models;
 using Microsoft.AspNetCore.Authorization;
+using Ecomerce.DTOS;
 
 
 namespace Ecomerce.Controllers
@@ -38,7 +39,7 @@ namespace Ecomerce.Controllers
 
 
     [HttpPost]
-    public IActionResult Post(UserModel user)
+    public IActionResult Post(User user)
     {
       _userRepository.SaveUser(user);
       return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
@@ -46,7 +47,7 @@ namespace Ecomerce.Controllers
 
     [Authorize]
     [HttpPut("{id}")]
-    public IActionResult Put(Guid id, UserUpdateDTO user)
+    public IActionResult Put(Guid id, User user)
     {
         var userFind = _userRepository.GetUserById(id);
         if (userFind == null)

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Ecomerce.Repositories;
-using Ecomerce.Models;
 using Microsoft.AspNetCore.Authorization;
 
 
@@ -17,7 +16,6 @@ namespace Ecomerce.Controllers
       }
 
 
-      [Authorize]
       [HttpGet]
       public IActionResult GetAll()
       {
@@ -26,7 +24,6 @@ namespace Ecomerce.Controllers
       }
 
 
-      [Authorize]
       [HttpGet("{id}")]
       public IActionResult GetById(Guid id)
       {
@@ -40,16 +37,16 @@ namespace Ecomerce.Controllers
 
       [Authorize]
       [HttpPost]
-      public IActionResult Post(ProductModel product)
+      public IActionResult Post(Product product)
       {
-          _productRepository.SaveProduct(product);
-          return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+        _productRepository.SaveProduct(product);
+        return Ok("Product saved");
       }
 
 
       [Authorize]
       [HttpPut]
-      public IActionResult Put(ProductModel product)
+      public IActionResult Put(Product product)
       {
           var productUpdate = _productRepository.UpdateProduct(product);
           if (productUpdate != null)

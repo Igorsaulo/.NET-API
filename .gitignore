@@ -20,5 +20,8 @@
 *.docstates
 /back-end/.env
 /back-end/app.db
-/front-end/node_modules/
-.env
+/front-end/cliente/node_modules/
+/front-end/cliente/.env
+/back-end/Migrations/
+/back-end/app.db
+/back-end/logs/
