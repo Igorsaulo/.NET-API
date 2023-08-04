@@ -1,11 +1,13 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
-using Ecomerce.Models;
+using Ecomerce.Models.UserProperties.UserCustomerProperties;
+using Ecomerce.Models.UserProperties;
+
 public class Product
 {
-  public int Id { get; set; }
+  public Guid Id { get; set; }
   public string Name { get; set; }
-  public string ImgUrl { get; set; }
+  public List<string> Images { get; set; }
   public string Description { get; set; }
   public string Category { get; set; }
   public decimal Price { get; set; }
@@ -22,4 +24,8 @@ public class Product
   // Foreign Keys
   public Guid? ShoppingCarId { get; set; }
   public ShoppingCar? ShoppingCar { get; set; }
+  public Guid? OperationId { get; set; }
+  public Operation? Operation { get; set; }
+  public Guid? UserSellerId { get; set; }
+  public UserSeller? UserSeller { get; set; }
 }

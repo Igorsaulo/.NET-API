@@ -40,7 +40,7 @@ namespace Ecomerce.Controllers
       public IActionResult Post(Product product)
       {
         _productRepository.SaveProduct(product);
-        return Ok("Product saved");
+        return Ok(product);
       }
 
 
@@ -51,7 +51,7 @@ namespace Ecomerce.Controllers
           var productUpdate = _productRepository.UpdateProduct(product);
           if (productUpdate != null)
           {
-              return Ok("Product updated");
+              return Ok(product);
           }
           else if(productUpdate == null)
           {
@@ -68,7 +68,7 @@ namespace Ecomerce.Controllers
         var product = _productRepository.DeleteProduct(id);
         if (product != null)
         {
-            return Ok("Product deleted");
+            return Ok(true);
         }
         else if(product == null)
         {

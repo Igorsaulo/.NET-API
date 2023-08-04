@@ -1,3 +1,4 @@
+using Ecomerce.Models.UserProperties;
 namespace Ecomerce.Models
 {
   public class User
@@ -9,8 +10,8 @@ namespace Ecomerce.Models
 
     public string Password { get; set; }
     public string Category { get; set; }
-    public ShoppingCar ShoppingCar { get; set; }
-    public ICollection<Shopping>? Shopping { get; set; }
+    public UserSeller? UserSeller { get; set; }
+    public UserCustomer? UserCustomer { get; set; }
   }
 
 }

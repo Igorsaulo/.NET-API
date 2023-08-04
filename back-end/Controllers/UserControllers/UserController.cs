@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Ecomerce.Repositories;
+using Ecomerce.Repositories.Interfaces;
 using Ecomerce.Models;
 using Microsoft.AspNetCore.Authorization;
 using Ecomerce.DTOS;
@@ -15,14 +16,6 @@ namespace Ecomerce.Controllers
     public UserController(IUserRepository userRepository)
     {
       _userRepository = userRepository;
-    }
-
-    [Authorize]
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-      var users = _userRepository.GetAll();
-      return Ok(users);
     }
 
     [Authorize]
@@ -93,25 +86,16 @@ namespace Ecomerce.Controllers
     }
 
     [Authorize]
-    [HttpPost("addProductInShoppingCar/{id}")]
-    public IActionResult addProducInShoppingCar(Guid id, Product product)
+    [HttpGet]
+    public IActionResult GetAll()
     {
-      if (_userRepository.addProducInShoppingCar(id, product))
+      var users = _userRepository.GetAllUsers();
+      if (users == null)
       {
-        return Ok("Product added");
+        return NotFound();
       }
-      return NoContent();
+      return Ok(users);
     }
 
-    [Authorize]
-    [HttpPost("removeProductInShoppingCar/{id}")]
-    public IActionResult removeProductInShoppingCar(Guid id, Product product)
-    {
-      if (_userRepository.removeProductInShoppingCar(id, product))
-      {
-        return Ok("Product removed");
-      }
-      return NoContent();
-    }
   }
 }

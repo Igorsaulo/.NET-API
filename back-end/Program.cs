@@ -1,13 +1,16 @@
 using Ecomerce.Repositories;
 using Ecomerce.Data;
 using Microsoft.OpenApi.Models;
-using Ecomerce.Services;
+using Ecomerce.Utils;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using DotNetEnv;
 using System.Text.Json.Serialization;
 using Serilog;
+using Ecomerce.Repositories.Interfaces;
+using Ecomerce.Services.Interfaces;
+using Ecomerce.Services;
 
 
 Env.Load();
@@ -25,12 +28,17 @@ builder.Services.AddControllers()
     {
       options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductsRepository>();
 builder.Services.AddScoped<AuthInterface, AuthService>();
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddScoped<IUserSellerInterface, UserSellerRepository>();
+builder.Services.AddScoped<IUserCustomerInterface, UserCustomerRepository>();
+
+builder.Services.AddScoped<UserSellerServiceInterface, SellerService>();
+builder.Services.AddScoped<CarshoppingServiceInterface, CarshoppingService>();
 
 builder.Services.AddAuthentication(a =>
 {
@@ -49,6 +57,7 @@ builder.Services.AddAuthentication(a =>
     ClockSkew = TimeSpan.Zero
   };
 });
+
 builder.Services.AddSwaggerGen(c =>
 {
   c.SwaggerDoc("v1", new OpenApiInfo { Title = "Ecomerce", Version = "v1" });

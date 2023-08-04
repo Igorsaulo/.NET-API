@@ -1,9 +1,12 @@
 using Ecomerce.Data;
 using Ecomerce.Models;
-using Ecomerce.Services;
+using Ecomerce.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Ecomerce.Models.UserProperties;
+using Ecomerce.Models.UserProperties.UserCustomerProperties;
+using Ecomerce.Repositories.Interfaces;
 
 namespace Ecomerce.Repositories
 {
@@ -22,13 +25,21 @@ namespace Ecomerce.Repositories
     public bool SaveUser(User user)
     {
       user.Password = PassWordManager.HashPassword(user.Password);
-      user.ShoppingCar = new ShoppingCar();
-      user.ShoppingCar.UserId = user.Id;
 
       var options = new JsonSerializerOptions
       {
         ReferenceHandler = ReferenceHandler.Preserve
       };
+
+      if (user.Category == "customer")
+      {
+        user.UserCustomer = new UserCustomer();
+        user.UserCustomer.ShoppingCar = new ShoppingCar();
+      }
+      else
+      {
+        user.UserSeller = new UserSeller();
+      }
 
       var json = JsonSerializer.Serialize(user, options);
 
@@ -70,87 +81,6 @@ namespace Ecomerce.Repositories
       return true;
     }
 
-    public List<User> GetAll()
-    {
-      var users = _context.Users
-          .Include(c => c.ShoppingCar)
-          .ThenInclude(sc => sc.Products)
-          .ToList();
-
-      return users;
-
-    }
-    public bool addProducInShoppingCar(Guid id, Product product)
-    {
-      try
-      {
-        var customer = _context.Users
-            .Include(u => u.ShoppingCar)
-            .ThenInclude(sc => sc.Products)
-            .FirstOrDefault(u => u.Id == id);
-
-        if (customer == null)
-        {
-          return false;
-        }
-
-        if (customer.ShoppingCar == null)
-        {
-          customer.ShoppingCar = new ShoppingCar
-          {
-            UserId = customer.Id
-          };
-          _context.SaveChanges();
-        }
-        customer.ShoppingCar.Products.Add(product);
-
-        _context.SaveChanges();
-        return true;
-      }
-      catch (Exception e)
-      {
-        Console.WriteLine(e);
-        return false;
-      }
-    }
-
-
-    public bool removeProductInShoppingCar(Guid id, Product product)
-    {
-      try
-      {
-        var user = _context.Users
-            .Include(c => c.ShoppingCar)
-            .ThenInclude(sc => sc.Products)
-            .FirstOrDefault(u => u.Id == id);
-
-        if (user == null || user.ShoppingCar == null)
-        {
-          return false;
-        }
-        var shoppingCar = user.ShoppingCar;
-        var productToRemove = shoppingCar.Products.FirstOrDefault(p => p.Id == product.Id);
-
-        if (productToRemove != null)
-        {
-          shoppingCar.Products.Remove(productToRemove);
-          _context.SaveChanges();
-          return true;
-        }
-        else
-        {
-          return false;
-        }
-      }
-      catch (Exception e)
-      {
-        Console.WriteLine(e);
-        return false;
-      }
-    }
-
-
-
     public string AuthtenTicateUser(string email, string password, string category)
     {
       try
@@ -162,6 +92,14 @@ namespace Ecomerce.Repositories
         Console.WriteLine(e);
         return "Dados inválidos";
       }
+    }
+
+    public List<User> GetAllUsers()
+    {
+      return _context.Users
+          .Include(u => u.UserCustomer)
+          .Include(u => u.UserSeller)
+          .ToList();
     }
   }
 }

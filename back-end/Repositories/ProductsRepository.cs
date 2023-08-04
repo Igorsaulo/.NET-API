@@ -21,7 +21,13 @@ namespace Ecomerce.Repositories
 
     public List<Product> GetAll()
     {
-      return _context.Products.ToList();
+      try{
+        return _context.Products.ToList();
+      }
+      catch(Exception ex){
+        Console.WriteLine(ex.Message);
+        throw new Exception("Não foi possível encontrar os produtos");
+      }
     }
 
 
